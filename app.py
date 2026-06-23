@@ -13,12 +13,20 @@ from streamlit_autorefresh import st_autorefresh
 # 1. Configuración de la página (Wide mode)
 st.set_page_config(page_title="Payroll", layout="wide", initial_sidebar_state="collapsed")
 
-st.markdown("""
+html_style = """
 <style>
     /* Ocultar elementos de Streamlit por defecto */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
+
+    /* Ocultar la flechita de la barra lateral (Sidebar Toggle) */
+    [data-testid="collapsedControl"] {
+        opacity: 0 !important;
+        pointer-events: none !important;
+        z-index: -100 !important;
+        width: 0px !important;
+    }
 
     /* Ocultar padding superior para maximizar espacio */
     .block-container {
@@ -79,11 +87,6 @@ st.markdown("""
     }
 
     /* Caja de texto del input flotante (Chat Input) */
-    .stChatFloatingInputContainer {
-        background: transparent !important;
-        padding-bottom: 25px !important;
-    }
-
     .stChatFloatingInputContainer > div {
         background: linear-gradient(135deg, rgba(25, 28, 36, 0.9) 0%, rgba(18, 20, 26, 0.95) 100%) !important;
         border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -139,7 +142,32 @@ st.markdown("""
         transform: scale(1.1);
     }
 </style>
-""", unsafe_allow_html=True)
+"""
+
+# Script JavaScript oculto para detectar F6 y abrir/cerrar panel lateral
+f6_script = """
+<script>
+    const doc = window.parent.document;
+    doc.addEventListener('keydown', function(e) {
+        if (e.key === 'F6') {
+            e.preventDefault();
+            // Buscar el botón de abrir (la flechita oculta)
+            let openBtn = doc.querySelector('[data-testid="collapsedControl"]');
+            // Buscar el botón de cerrar (la X dentro del panel abierto)
+            let closeBtn = doc.querySelector('[data-testid="stSidebar"] button');
+            
+            if (openBtn && window.getComputedStyle(doc.querySelector('[data-testid="stSidebar"]')).display === 'none') {
+                openBtn.click();
+            } else if (closeBtn) {
+                closeBtn.click();
+            }
+        }
+    });
+</script>
+"""
+components.html(f6_script, height=0, width=0)
+
+st.markdown(html_style, unsafe_allow_html=True)
 
 try:
     from dotenv import load_dotenv
