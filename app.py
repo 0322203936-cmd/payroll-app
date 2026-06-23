@@ -146,7 +146,8 @@ f6_script = """
             }
         }
     });
-
+</script>
+"""
 
 st.markdown(html_style, unsafe_allow_html=True)
 
