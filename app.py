@@ -30,7 +30,8 @@ st.markdown("""
     }
 
     /* ==== CONTORNO DEL PANEL LATERAL (TODA LA COLUMNA DERECHA) ==== */
-    [data-testid="stColumn"]:nth-of-type(2) {
+    [data-testid="stColumn"]:has(#right-panel-marker),
+    [data-testid="column"]:has(#right-panel-marker) {
         border: 2px solid rgba(74, 144, 226, 0.4) !important;
         border-radius: 20px !important;
         padding: 15px 15px 15px 15px !important;
@@ -40,7 +41,8 @@ st.markdown("""
     }
     
     @media (prefers-color-scheme: dark) {
-        [data-testid="stColumn"]:nth-of-type(2) {
+        [data-testid="stColumn"]:has(#right-panel-marker),
+        [data-testid="column"]:has(#right-panel-marker) {
             background-color: rgba(15, 20, 25, 0.7) !important;
             border: 2px solid rgba(74, 144, 226, 0.3) !important;
             box-shadow: -5px 0 25px rgba(0, 0, 0, 0.2) !important;
