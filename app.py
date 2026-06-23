@@ -91,7 +91,6 @@ st.markdown("""
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255,255,255,0.05) !important;
         backdrop-filter: blur(20px) !important;
         transition: all 0.3s ease !important;
-        padding: 4px 8px;
     }
 
     /* Brillo al enfocar el cuadro de texto */
