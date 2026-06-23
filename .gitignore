@@ -1,0 +1,19 @@
+# Entornos virtuales
+venv/
+env/
+.venv/
+
+# Variables de entorno y secretos (¡NUNCA SUBIR A GITHUB!)
+.env
+credentials.json
+
+# Archivos de caché y temporales de Python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Archivos temporales de la aplicación
+PAYROLL.xlsx
+temp_clean.xlsx
+temp_excel_view.html
+download_test.xlsx
