@@ -30,7 +30,7 @@ html_style = """
 
     /* Ocultar padding superior para maximizar espacio */
     .block-container {
-        padding-top: 1rem !important;
+        padding-top: 0rem !important;
         padding-bottom: 0rem !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
@@ -146,9 +146,7 @@ f6_script = """
             }
         }
     });
-</script>
-"""
-components.html(f6_script, height=0, width=0)
+
 
 st.markdown(html_style, unsafe_allow_html=True)
 
@@ -243,9 +241,12 @@ with st.sidebar:
             del os.environ["GEMINI_API_KEY"]
         st.rerun()
 
-# ----------------- AUTO-SYNC EN TIEMPO REAL -----------------
-# 1. Mantener la aplicación despierta y refrescando cada 60 segundos
-st_autorefresh(interval=60 * 1000, key="data_autorefresh")
+    # ----------------- AUTO-SYNC EN TIEMPO REAL -----------------
+    # 1. Mantener la aplicación despierta y refrescando cada 60 segundos
+    st_autorefresh(interval=60 * 1000, key="data_autorefresh")
+    
+    # Inyectar el script F6 en la barra lateral para que no ocupe espacio visual en la página principal
+    components.html(f6_script, height=0, width=0)
 
 # 2. Función súper rápida para revisar si hubo cambios en Drive (caché de 60s)
 @st.cache_data(ttl=60)
