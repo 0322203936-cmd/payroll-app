@@ -86,23 +86,6 @@ html_style = """
         font-size: 0.95rem;
     }
 
-    /* Caja de texto del input flotante (Chat Input) */
-    .stChatFloatingInputContainer > div {
-        background: linear-gradient(135deg, rgba(25, 28, 36, 0.9) 0%, rgba(18, 20, 26, 0.95) 100%) !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        border-radius: 24px !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255,255,255,0.05) !important;
-        backdrop-filter: blur(20px) !important;
-        transition: all 0.3s ease !important;
-    }
-
-    /* Brillo al enfocar el cuadro de texto */
-    .stChatFloatingInputContainer > div:focus-within {
-        border: 1px solid rgba(74, 144, 226, 0.6) !important;
-        box-shadow: 0 0 20px rgba(74, 144, 226, 0.3), 0 10px 30px rgba(0,0,0,0.4) !important;
-        background: rgba(20, 22, 28, 0.95) !important;
-    }
-
     /* Contorno especial para los mensajes de la IA (Asistente) */
     [data-testid="stChatMessage"]:has([data-testid*="AvatarAssistant"]), 
     [data-testid="stChatMessage"]:has(svg),
@@ -507,9 +490,8 @@ with col2:
         st.session_state.messages = []
 
     # Contenedor scrolleable para el chat
-    # Ajustamos la altura a 760px para compensar el espacio que ocupa el input de la API Key arriba
-    # y así mantener la parte inferior alineada con la tabla de 850px.
-    chat_container = st.container(height=760, border=False)
+    # Ajustamos la altura a 880px para que el chat_input quede exactamente alineado al fondo (950px)
+    chat_container = st.container(height=880, border=False)
     
     with chat_container:
         for msg in st.session_state.messages:
