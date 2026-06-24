@@ -213,6 +213,19 @@ with st.sidebar:
             st.rerun()
 
     st.divider()
+    st.markdown("### 📂 Carga Manual")
+    uploaded_file = st.file_uploader("Sube tu propio Excel (.xlsx)", type=["xlsx"])
+    if uploaded_file is not None:
+        if st.session_state.get("last_uploaded_id") != uploaded_file.file_id:
+            with open(EXCEL_FILE, "wb") as f:
+                f.write(uploaded_file.getbuffer())
+            if os.path.exists(HTML_FILE):
+                os.remove(HTML_FILE)
+            st.session_state.last_uploaded_id = uploaded_file.file_id
+            st.toast("¡Archivo manual cargado!", icon="✅")
+            st.rerun()
+
+    st.divider()
     st.markdown("### 🔑 Configuración IA")
     saved_key = os.environ.get("GEMINI_API_KEY", "")
     new_key = st.text_input("Gemini API Key", value=saved_key, type="password", placeholder="Pega tu clave aquí")
