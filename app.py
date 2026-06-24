@@ -31,7 +31,7 @@ html_style = """
     /* Ocultar padding superior para maximizar espacio */
     .block-container {
         padding-top: 0rem !important;
-        padding-bottom: 0rem !important;
+        padding-bottom: 2rem !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
         max-width: 100% !important;
