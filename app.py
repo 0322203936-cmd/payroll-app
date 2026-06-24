@@ -26,7 +26,7 @@ html_style = """
         z-index: 9999 !important;
         width: 40px !important;
         height: 40px !important;
-        background-color: #4A90E2 !important;
+        background-color: #0b246a !important;
         color: white !important;
         border-radius: 8px !important;
         padding: 8px !important;
@@ -42,7 +42,7 @@ html_style = """
     
     [data-testid="collapsedControl"]:hover {
         transform: scale(1.05) !important;
-        background-color: #357ABD !important;
+        background-color: #1a388a !important;
     }
     
     [data-testid="collapsedControl"] svg {
