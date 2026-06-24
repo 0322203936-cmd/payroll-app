@@ -59,6 +59,18 @@ html_style = """
         max-width: 100% !important;
     }
 
+    /* Color azul oscuro (Navy) para todos los botones en la barra lateral */
+    [data-testid="stSidebar"] .stButton > button {
+        background-color: #0b246a !important;
+        color: white !important;
+        border: none !important;
+    }
+    
+    [data-testid="stSidebar"] .stButton > button:hover {
+        background-color: #1a388a !important;
+        color: white !important;
+    }
+
     /* ==== CONTORNO DEL PANEL LATERAL (TODA LA COLUMNA DERECHA) ==== */
     [data-testid="stColumn"]:has(#right-panel-marker),
     [data-testid="column"]:has(#right-panel-marker) {
@@ -267,7 +279,7 @@ with st.sidebar:
             st.rerun()
 
     st.divider()
-    st.markdown("### 🔑 Configuración IA")
+    st.markdown("### 🔑 Coloca tu Key")
     saved_key = os.environ.get("GEMINI_API_KEY", "")
     new_key = st.text_input("Gemini API Key", value=saved_key, type="password", placeholder="Pega tu clave aquí")
     
