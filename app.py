@@ -9,7 +9,6 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 import io
-from streamlit_autorefresh import st_autorefresh
 # 1. Configuración de la página (Wide mode)
 st.set_page_config(page_title="Payroll", layout="wide", initial_sidebar_state="collapsed")
 
@@ -250,10 +249,7 @@ with st.sidebar:
             del os.environ["GEMINI_API_KEY"]
         st.rerun()
 
-    # ----------------- AUTO-SYNC EN TIEMPO REAL -----------------
-    # 1. Mantener la aplicación despierta y refrescando cada 60 segundos
-    st_autorefresh(interval=60 * 1000, key="data_autorefresh")
-    
+    # ----------------- INYECCIÓN DE SCRIPTS -----------------
     # Inyectar el script F6 en la barra lateral para que no ocupe espacio visual en la página principal
     components.html(f6_script, height=0, width=0)
 
