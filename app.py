@@ -138,21 +138,31 @@ html_style = """
 f6_script = """
 <script>
     const doc = window.parent.document;
-    doc.addEventListener('keydown', function(e) {
-        if (e.key === 'F6') {
-            e.preventDefault();
-            // Buscar el botón de abrir (la flechita oculta)
-            let openBtn = doc.querySelector('[data-testid="collapsedControl"]');
-            // Buscar el botón de cerrar (la X dentro del panel abierto)
-            let closeBtn = doc.querySelector('[data-testid="stSidebar"] button');
-            
-            if (openBtn && window.getComputedStyle(doc.querySelector('[data-testid="stSidebar"]')).display === 'none') {
-                openBtn.click();
-            } else if (closeBtn) {
-                closeBtn.click();
+    if (!window.parent.f6ListenerAdded) {
+        doc.addEventListener('keydown', function(e) {
+            if (e.key === 'F6') {
+                e.preventDefault();
+                let sidebar = doc.querySelector('[data-testid="stSidebar"]');
+                if (sidebar) {
+                    let isExpanded = sidebar.getAttribute('aria-expanded') === 'true';
+                    if (isExpanded) {
+                        // Cerrar
+                        let closeBtn = doc.querySelector('[data-testid="stSidebarCollapseButton"]') || sidebar.querySelector('button');
+                        if (closeBtn) closeBtn.click();
+                    } else {
+                        // Abrir
+                        let openBtn = doc.querySelector('[data-testid="collapsedControl"]');
+                        if (openBtn) openBtn.click();
+                    }
+                } else {
+                    // Fallback
+                    let openBtn = doc.querySelector('[data-testid="collapsedControl"]');
+                    if (openBtn) openBtn.click();
+                }
             }
-        }
-    });
+        });
+        window.parent.f6ListenerAdded = true;
+    }
 </script>
 """
 
