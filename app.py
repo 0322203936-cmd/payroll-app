@@ -7,7 +7,7 @@ from langchain_experimental.agents.agent_toolkits import create_pandas_dataframe
 from langchain_google_genai import ChatGoogleGenerativeAI
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseDownload
+from googleapiclient.http import MediaIoBaseDownload, MediaFileUpload
 import io
 # 1. Configuración de la página (Wide mode)
 st.set_page_config(page_title="Payroll", layout="wide", initial_sidebar_state="collapsed")
@@ -168,7 +168,7 @@ HTML_FILE = "temp_excel_view.html"
 
 def sync_google_drive():
     try:
-        SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
+        SCOPES = ['https://www.googleapis.com/auth/drive']
         SERVICE_ACCOUNT_FILE = 'credentials.json'
         if not os.path.exists(SERVICE_ACCOUNT_FILE):
             st.sidebar.error("Falta credentials.json para conectar a Google Drive.")
@@ -206,6 +206,40 @@ def sync_google_drive():
         st.sidebar.error(f"Error conectando a Google Drive: {e}")
         return False
 
+def upload_google_drive(file_path):
+    try:
+        SCOPES = ['https://www.googleapis.com/auth/drive']
+        SERVICE_ACCOUNT_FILE = 'credentials.json'
+        if not os.path.exists(SERVICE_ACCOUNT_FILE):
+            st.sidebar.error("Falta credentials.json para conectar a Google Drive.")
+            return False
+        
+        creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+        service = build('drive', 'v3', credentials=creds)
+        file_id = '19igCbEX2mtp8GRj14QDmRXYMVM7ecdgz'
+        
+        media = MediaFileUpload(file_path, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        with st.sidebar.status("Subiendo a Google Drive...", expanded=True) as status:
+            service.files().update(
+                fileId=file_id,
+                media_body=media
+            ).execute()
+            
+            try:
+                current_cloud_time = service.files().get(fileId=file_id, fields="modifiedTime").execute().get('modifiedTime')
+                if current_cloud_time:
+                    with open('last_sync.txt', 'w') as f:
+                        f.write(current_cloud_time)
+                    if 'get_cloud_modified_time' in globals():
+                        get_cloud_modified_time.clear()
+            except:
+                pass
+            status.update(label="¡Subido y sincronizado correctamente!", state="complete", expanded=False)
+        return True
+    except Exception as e:
+        st.sidebar.error(f"Error subiendo a Google Drive (¿Tiene el Service Account permisos de Editor?): {e}")
+        return False
+
 with st.sidebar:
     st.markdown("### ☁️ Sincronización Nube")
     if st.button("🔄 Actualizar Datos desde Google Sheets"):
@@ -219,10 +253,14 @@ with st.sidebar:
         if st.session_state.get("last_uploaded_id") != uploaded_file.file_id:
             with open(EXCEL_FILE, "wb") as f:
                 f.write(uploaded_file.getbuffer())
+                
+            # Subir a Google Drive
+            upload_google_drive(EXCEL_FILE)
+            
             if os.path.exists(HTML_FILE):
                 os.remove(HTML_FILE)
             st.session_state.last_uploaded_id = uploaded_file.file_id
-            st.toast("¡Archivo manual cargado!", icon="✅")
+            st.toast("¡Archivo manual cargado y subido a Drive!", icon="✅")
             st.rerun()
 
     st.divider()
