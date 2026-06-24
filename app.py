@@ -481,7 +481,7 @@ with col1:
                 # Inyectar Javascript para filtros
                 filter_script = """
                 <script>
-                document.addEventListener("DOMContentLoaded", function() {
+                function initFilters() {
                     // Buscar la fila de encabezados
                     var allTds = document.querySelectorAll("td, th");
                     var headerRow = null;
@@ -498,8 +498,9 @@ with col1:
                         var headerIndex = Array.prototype.indexOf.call(tableRows, headerRow);
                         
                         for (let i = 0; i < headers.length; i++) {
-                            // Ignorar celdas vacías
+                            // Ignorar celdas vacías o que ya tengan un filtro creado
                             if (headers[i].innerText.trim() === "") continue;
+                            if (headers[i].querySelector("select")) continue;
                             
                             let select = document.createElement("select");
                             select.innerHTML = '<option value="">Filtrar...</option>';
@@ -551,7 +552,13 @@ with col1:
                             headers[i].appendChild(select);
                         }
                     }
-                });
+                }
+                
+                if (document.readyState === "loading") {
+                    document.addEventListener("DOMContentLoaded", initFilters);
+                } else {
+                    initFilters();
+                }
                 </script>
                 """
                 if '</body>' in html_content:
