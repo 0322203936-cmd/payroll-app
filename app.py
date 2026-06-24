@@ -164,37 +164,7 @@ html_style = """
 </style>
 """
 
-# Script JavaScript oculto para detectar F6 y abrir/cerrar panel lateral
-f6_script = """
-<script>
-    const doc = window.parent.document;
-    if (!window.parent.f6ListenerAdded) {
-        doc.addEventListener('keydown', function(e) {
-            if (e.key === 'F6') {
-                e.preventDefault();
-                let sidebar = doc.querySelector('[data-testid="stSidebar"]');
-                if (sidebar) {
-                    let isExpanded = sidebar.getAttribute('aria-expanded') === 'true';
-                    if (isExpanded) {
-                        // Cerrar
-                        let closeBtn = doc.querySelector('[data-testid="stSidebarCollapseButton"]') || sidebar.querySelector('button');
-                        if (closeBtn) closeBtn.click();
-                    } else {
-                        // Abrir
-                        let openBtn = doc.querySelector('[data-testid="collapsedControl"]');
-                        if (openBtn) openBtn.click();
-                    }
-                } else {
-                    // Fallback
-                    let openBtn = doc.querySelector('[data-testid="collapsedControl"]');
-                    if (openBtn) openBtn.click();
-                }
-            }
-        });
-        window.parent.f6ListenerAdded = true;
-    }
-</script>
-"""
+
 
 st.markdown(html_style, unsafe_allow_html=True)
 
@@ -340,9 +310,7 @@ with st.sidebar:
             del os.environ["GEMINI_API_KEY"]
         st.rerun()
 
-# ----------------- INYECCIÓN DE SCRIPTS -----------------
-# Inyectar el script F6 en el hilo principal para que siempre cargue (incluso si la barra lateral está oculta al inicio)
-components.html(f6_script, height=0, width=0)
+
 
 # 2. Función súper rápida para revisar si hubo cambios en Drive (caché de 60s)
 @st.cache_data(ttl=60)
