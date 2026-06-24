@@ -124,6 +124,14 @@ html_style = """
         color: #6fb0ff !important;
         transform: scale(1.1);
     }
+
+    /* Hacer más grande la caja de texto del chat para que quepan 2 líneas */
+    [data-testid="stChatInput"] textarea {
+        min-height: 60px !important;
+        font-size: 0.9rem !important;
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
+    }
 </style>
 """
 
