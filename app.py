@@ -19,24 +19,25 @@ html_style = """
     footer {visibility: hidden;}
     header {visibility: hidden;}
 
-    /* Convertir el botón nativo de la barra lateral en un botón azul flotante */
+    /* Botón azul pequeño en la parte superior */
     [data-testid="collapsedControl"] {
         opacity: 1 !important;
         pointer-events: auto !important;
         z-index: 9999 !important;
-        width: auto !important;
-        height: auto !important;
+        width: 40px !important;
+        height: 40px !important;
         background-color: #4A90E2 !important;
         color: white !important;
-        border-radius: 50px !important;
-        padding: 10px 20px !important;
-        position: fixed !important;
-        top: 15px !important;
+        border-radius: 8px !important;
+        padding: 8px !important;
+        position: absolute !important;
+        top: 10px !important;
         left: 15px !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
         transition: transform 0.2s, background-color 0.2s !important;
         display: flex !important;
         align-items: center !important;
+        justify-content: center !important;
     }
     
     [data-testid="collapsedControl"]:hover {
@@ -48,18 +49,10 @@ html_style = """
         fill: white !important;
         color: white !important;
     }
-    
-    [data-testid="collapsedControl"]::after {
-        content: " Menú y Cargas";
-        font-family: 'Inter', sans-serif;
-        font-weight: bold;
-        font-size: 14px;
-        margin-left: 8px;
-    }
 
-    /* Ocultar padding superior para maximizar espacio */
+    /* Añadir algo de padding superior para que el botón no tape la tabla */
     .block-container {
-        padding-top: 0rem !important;
+        padding-top: 3.5rem !important;
         padding-bottom: 2rem !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
