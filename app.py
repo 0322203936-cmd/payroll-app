@@ -19,12 +19,42 @@ html_style = """
     footer {visibility: hidden;}
     header {visibility: hidden;}
 
-    /* Ocultar la flechita de la barra lateral (Sidebar Toggle) */
+    /* Convertir el botón nativo de la barra lateral en un botón azul flotante */
     [data-testid="collapsedControl"] {
-        opacity: 0 !important;
-        pointer-events: none !important;
-        z-index: -100 !important;
-        width: 0px !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        z-index: 9999 !important;
+        width: auto !important;
+        height: auto !important;
+        background-color: #4A90E2 !important;
+        color: white !important;
+        border-radius: 50px !important;
+        padding: 10px 20px !important;
+        position: fixed !important;
+        top: 15px !important;
+        left: 15px !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+        transition: transform 0.2s, background-color 0.2s !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+    
+    [data-testid="collapsedControl"]:hover {
+        transform: scale(1.05) !important;
+        background-color: #357ABD !important;
+    }
+    
+    [data-testid="collapsedControl"] svg {
+        fill: white !important;
+        color: white !important;
+    }
+    
+    [data-testid="collapsedControl"]::after {
+        content: " Menú y Cargas";
+        font-family: 'Inter', sans-serif;
+        font-weight: bold;
+        font-size: 14px;
+        margin-left: 8px;
     }
 
     /* Ocultar padding superior para maximizar espacio */
