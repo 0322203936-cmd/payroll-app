@@ -249,9 +249,9 @@ with st.sidebar:
             del os.environ["GEMINI_API_KEY"]
         st.rerun()
 
-    # ----------------- INYECCIÓN DE SCRIPTS -----------------
-    # Inyectar el script F6 en la barra lateral para que no ocupe espacio visual en la página principal
-    components.html(f6_script, height=0, width=0)
+# ----------------- INYECCIÓN DE SCRIPTS -----------------
+# Inyectar el script F6 en el hilo principal para que siempre cargue (incluso si la barra lateral está oculta al inicio)
+components.html(f6_script, height=0, width=0)
 
 # 2. Función súper rápida para revisar si hubo cambios en Drive (caché de 60s)
 @st.cache_data(ttl=60)
