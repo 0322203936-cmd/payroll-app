@@ -335,6 +335,19 @@ with col1:
                 if max_r > last_valid_row:
                     ws.delete_rows(last_valid_row + 1, max_r - last_valid_row)
                     
+                # Extraer comentarios
+                comments_dict = {}
+                for row in ws.iter_rows():
+                    for cell in row:
+                        if cell.comment:
+                            c_text = cell.comment.text
+                            if "[Threaded comment]" in c_text:
+                                idx = c_text.find("Comment:\n")
+                                if idx != -1:
+                                    c_text = c_text[idx + len("Comment:\n"):].strip()
+                            c_text = c_text.replace('"', '&quot;').replace('\n', '&#10;')
+                            comments_dict[f"{ws.title}!{cell.coordinate}"] = c_text
+
                 wb.save(temp_excel)
                 
                 xlsx2html(temp_excel, HTML_FILE)
@@ -382,6 +395,23 @@ with col1:
                     tr:nth-child(n+4) td {
                         border-bottom: 1px solid #eef2f6 !important;
                     }
+
+                    /* Estilo para celdas con comentarios */
+                    .has-comment {
+                        position: relative;
+                        cursor: help;
+                    }
+                    .has-comment::after {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        width: 0;
+                        height: 0;
+                        border-left: 8px solid transparent;
+                        border-top: 8px solid #ff4444;
+                        opacity: 0.8;
+                    }
                 </style>
                 """
                 html_content = html_content.replace('</head>', f'{custom_iframe_css}</head>')
@@ -390,6 +420,12 @@ with col1:
                 html_content = html_content.replace('background-color: #002060', 'background-color: #002060; color: #ffffff !important')
                 html_content = html_content.replace('color: #000000;font-size: 11.0px;height: 23.0pt', 'color: #ffffff !important;font-size: 15.0px;height: 23.0pt')
                 
+                # Inyectar comentarios en el HTML
+                for cell_id, comment_text in comments_dict.items():
+                    search_str = f'id="{cell_id}"'
+                    replace_str = f'id="{cell_id}" title="{comment_text}" class="has-comment"'
+                    html_content = html_content.replace(search_str, replace_str)
+
                 # Inyectar Javascript para filtros
                 filter_script = """
                 <script>
